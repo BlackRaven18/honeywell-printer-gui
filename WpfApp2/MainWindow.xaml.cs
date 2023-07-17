@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Threading;
 using System.Windows.Media;
+using System.Collections.Specialized;
 
 namespace VIVEVMSLabels
 {
@@ -141,6 +142,25 @@ namespace VIVEVMSLabels
             Updater uiUpdater = new Updater(UpdatetxtInfo1);
             Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, "Trwa drukowanie", Brushes.Red);
 
+            StringCollection columnNames = new StringCollection();
+            foreach (DataColumn oneColumn in dt.Columns)
+            {
+                columnNames.Add(oneColumn.ColumnName);
+            }
+
+
+            foreach (DataRow oneRow in dt.Rows)
+            {
+
+                //RawPrinterHelper.SendStringToPrinter("Generic / Text Only", LablelStringToPrinter.StringToPrinter(OneRow));
+
+                //Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
+               
+                LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
+            }
+
+            /*Updater uiUpdater = new Updater(UpdatetxtInfo1);
+
 
             SerialPort MyCOMPort = new SerialPort(); // Create a new SerialPort Object
 
@@ -158,12 +178,17 @@ namespace VIVEVMSLabels
             int printnumber;
             printnumber = 1;
 
+
+            //TODO: printing rows based on excel
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
+            System.Threading.Thread.Sleep(1500);
+
             foreach (DataRow OneRow in dt.Rows)
             {
 
                 //RawPrinterHelper.SendStringToPrinter("Generic / Text Only", LablelStringToPrinter.StringToPrinter(OneRow));
 
-                Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} " , Brushes.Red);
+                Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
                 MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(OneRow));
                 System.Threading.Thread.Sleep(1500);
                 //Debug.WriteLine(OneRow[3]);
@@ -176,7 +201,7 @@ namespace VIVEVMSLabels
             MyCOMPort.Close();
 
             //using System.Threading.Tasks;
-            /*
+
             Task.Run(() =>
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -186,8 +211,8 @@ namespace VIVEVMSLabels
                 }), DispatcherPriority.Render);
                 //Thread.Sleep(1);
             });
-            */
-            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Wybierz akcję ({dt.Rows.Count} pozycji).", Brushes.Black);
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Wybierz akcję ({dt.Rows.Count} pozycji).", Brushes.Black);*/
         }
 
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -274,10 +276,15 @@ namespace VIVEVMSLabels
         }
 
 
-        public static string StringToPrinter(DataRow OneRow)
+
+        public static string StringToPrinter(DataRow OneRow, StringCollection columnNames)
         {
             string thisstring;
             string rack, xcoor, ycoor, cheksum;
+            int i = 0;
+
+            string script = File.ReadAllText(@"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\WpfApp2\\1.txt");
+
 
             rack = "01";
             xcoor = "01";
@@ -285,9 +292,22 @@ namespace VIVEVMSLabels
             //rack = OneRow[1].ToString();
             //xcoor = OneRow[2].ToString();
             //ycoor = OneRow[3].ToString();
-            cheksum = OneRow[3].ToString();
+            //cheksum = OneRow[3].ToString();
 
-            thisstring = ShelfNo0(cheksum.Substring(7, 1), xcoor, cheksum);
+            //thisstring = ShelfNo0(cheksum.Substring(7, 1), xcoor, cheksum);
+            thisstring = script;
+
+            foreach(String columnVar in columnNames)
+            {
+                Debug.WriteLine(columnVar);
+                thisstring = thisstring.Replace(columnVar, OneRow[i++].ToString());
+
+            }
+
+            using (StreamWriter writer = new StreamWriter(@"D:\\profil_arkadiuszw\\Desktop\\dssmith 2021-01-22\\Wpf_Sek20210121\\WpfApp2\\printedlog.txt"))
+            {
+                writer.WriteLine(thisstring);
+            }
 
             /**
             switch (ycoor)
