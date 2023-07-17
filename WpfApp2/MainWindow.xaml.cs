@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Collections.Specialized;
 using System.CodeDom;
 using System.IO;
+using System.Text.Json;
 
 namespace VIVEVMSLabels
 {
@@ -19,23 +20,19 @@ namespace VIVEVMSLabels
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly string SCRIPT_FILE_PATH = @"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\WpfApp2\\1.txt";
-
+        
         protected DataTable dt;
-        private string printedScript;
 
 
         public MainWindow()
         {
             InitializeComponent();
-            loadPrintedScript();
+            //OptionsManager optionsManager = OptionsManager.getInstance();
+            //Debug.WriteLine($"default = {optionsManager.appSettings.defaultPrinterScript}");
         }
 
-        private void loadPrintedScript()
-        {
-            printedScript = File.ReadAllText(SCRIPT_FILE_PATH);
-        }
 
+  
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -200,7 +197,9 @@ namespace VIVEVMSLabels
 
 
                 Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
-                MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, printedScript, columnNames));
+                //MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, printedScript, columnNames));
+                LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
+                //MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, columnNames));
                 System.Threading.Thread.Sleep(1500);
 
             }
