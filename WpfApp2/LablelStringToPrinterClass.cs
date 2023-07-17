@@ -22,15 +22,14 @@ namespace VIVEVMSLabels
             {
                 if(condition.value == OneRow[conditionColumnNumber].ToString().Trim()) //here value from specified column oneRow. ...
                 {
-                    thisstring = File.ReadAllText(
-                        @"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\scripts\" + condition.script);
+                    thisstring = File.ReadAllText(condition.script);
        
                     break;
                 }
                 else
                 {
                     thisstring = File.ReadAllText(
-                       @"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\scripts\" + optionsManager.appSettings.defaultPrinterScript);
+                       @optionsManager.appSettings.defaultPrinterScript);
                 }
             }
 
