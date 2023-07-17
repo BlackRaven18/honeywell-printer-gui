@@ -277,14 +277,11 @@ namespace VIVEVMSLabels
 
 
 
-        public static string StringToPrinter(DataRow OneRow, StringCollection columnNames)
+        public static string StringToPrinter(DataRow OneRow, string printedScript, StringCollection columnNames)
         {
             string thisstring;
             string rack, xcoor, ycoor, cheksum;
             int i = 0;
-
-            string script = File.ReadAllText(@"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\WpfApp2\\1.txt");
-
 
             rack = "01";
             xcoor = "01";
@@ -295,7 +292,7 @@ namespace VIVEVMSLabels
             //cheksum = OneRow[3].ToString();
 
             //thisstring = ShelfNo0(cheksum.Substring(7, 1), xcoor, cheksum);
-            thisstring = script;
+            thisstring = printedScript;
 
             foreach(String columnVar in columnNames)
             {

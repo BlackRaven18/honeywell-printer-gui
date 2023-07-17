@@ -9,6 +9,8 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Windows.Media;
 using System.Collections.Specialized;
+using System.CodeDom;
+using System.IO;
 
 namespace VIVEVMSLabels
 {
@@ -17,9 +19,21 @@ namespace VIVEVMSLabels
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly string SCRIPT_FILE_PATH = @"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\WpfApp2\\1.txt";
+
+        protected DataTable dt;
+        private string printedScript;
+
+
         public MainWindow()
         {
             InitializeComponent();
+            loadPrintedScript();
+        }
+
+        private void loadPrintedScript()
+        {
+            printedScript = File.ReadAllText(SCRIPT_FILE_PATH);
         }
 
 
@@ -44,7 +58,6 @@ namespace VIVEVMSLabels
 
         private delegate void UpdaterGrid();
 
-        protected DataTable dt;
 
         private void ReadLabels(string chosenFile)
         {
@@ -148,18 +161,17 @@ namespace VIVEVMSLabels
                 columnNames.Add(oneColumn.ColumnName);
             }
 
+            //TODO: test printing without using printer
+            /* foreach (DataRow oneRow in dt.Rows)
+             {
 
-            foreach (DataRow oneRow in dt.Rows)
-            {
+                 //RawPrinterHelper.SendStringToPrinter("Generic / Text Only", LablelStringToPrinter.StringToPrinter(OneRow));
 
-                //RawPrinterHelper.SendStringToPrinter("Generic / Text Only", LablelStringToPrinter.StringToPrinter(OneRow));
+                 //Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
 
-                //Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
-               
-                LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
-            }
+                 LablelStringToPrinter.StringToPrinter(oneRow, printedScript, columnNames);
+             }*/
 
-            /*Updater uiUpdater = new Updater(UpdatetxtInfo1);
 
 
             SerialPort MyCOMPort = new SerialPort(); // Create a new SerialPort Object
@@ -183,19 +195,14 @@ namespace VIVEVMSLabels
             Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
             System.Threading.Thread.Sleep(1500);
 
-            foreach (DataRow OneRow in dt.Rows)
+            foreach (DataRow oneRow in dt.Rows)
             {
 
-                //RawPrinterHelper.SendStringToPrinter("Generic / Text Only", LablelStringToPrinter.StringToPrinter(OneRow));
 
                 Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
-                MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(OneRow));
+                MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, printedScript, columnNames));
                 System.Threading.Thread.Sleep(1500);
-                //Debug.WriteLine(OneRow[3]);
-                //foreach (var item in OneRow.ItemArray)
-                //{
-                //    Debug.WriteLine(item);
-                //}
+
             }
 
             MyCOMPort.Close();
@@ -212,7 +219,7 @@ namespace VIVEVMSLabels
                 //Thread.Sleep(1);
             });
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Wybierz akcję ({dt.Rows.Count} pozycji).", Brushes.Black);*/
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Wybierz akcję ({dt.Rows.Count} pozycji).", Brushes.Black);
         }
 
 
