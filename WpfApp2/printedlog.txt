@@ -1,1 +1,97 @@
 
+
+------------------------------------------------------------
+
+'1
+ALIGN 1
+CTRLSUM$ = "BGN1"
+SHELF$= "1"
+PRPOS60, 160
+BARFONT OFF
+BARSET "CODE128", 3, 1, 4, 120, 0, 0
+PRBAR CTRLSUM$
+FONT "Univers Bold", 40
+PRPOS30, 01
+PRTXT CTRLSUM$
+DIR 1
+FONT "Univers Bold", 40
+PRPOS50, 325
+PRTXT SHELF$
+PRINTFEED
+NEXT
+
+
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+
+'2
+ALIGN 1
+CTRLSUM$ = "BGN1"
+SHELF$= "1"
+PRPOS60, 160
+BARFONT OFF
+BARSET "CODE128", 3, 1, 4, 120, 0, 0
+PRBAR CTRLSUM$
+FONT "Univers Bold", 40
+PRPOS30, 01
+PRTXT CTRLSUM$
+DIR 1
+FONT "Univers Bold", 40
+PRPOS50, 325
+PRTXT SHELF$
+PRINTFEED
+NEXT
+
+
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+
+'3
+ALIGN 1
+CTRLSUM$ = "BGN1"
+SHELF$= "1"
+PRPOS60, 160
+BARFONT OFF
+BARSET "CODE128", 3, 1, 4, 120, 0, 0
+PRBAR CTRLSUM$
+FONT "Univers Bold", 40
+PRPOS30, 01
+PRTXT CTRLSUM$
+DIR 1
+FONT "Univers Bold", 40
+PRPOS50, 325
+PRTXT SHELF$
+PRINTFEED
+NEXT
+
+
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+
+'1
+ALIGN 1
+CTRLSUM$ = "BGN1"
+SHELF$= "1"
+PRPOS60, 160
+BARFONT OFF
+BARSET "CODE128", 3, 1, 4, 120, 0, 0
+PRBAR CTRLSUM$
+FONT "Univers Bold", 40
+PRPOS30, 01
+PRTXT CTRLSUM$
+DIR 1
+FONT "Univers Bold", 40
+PRPOS50, 325
+PRTXT SHELF$
+PRINTFEED
+NEXT
+
+
+------------------------------------------------------------
+

@@ -1,7 +1,6 @@
 ﻿
 using System.Collections.Specialized;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 
 
@@ -12,10 +11,30 @@ namespace VIVEVMSLabels
 
         public static string StringToPrinter(DataRow OneRow, StringCollection columnNames)
         {
-            string thisstring = "";
-
             OptionsManager optionsManager = OptionsManager.getInstance();
-            Debug.WriteLine($"default = {optionsManager.appSettings.defaultPrinterScript}");
+            string thisstring = "";
+            int conditionColumnNumber = findColumnNumber(columnNames);
+
+            if (conditionColumnNumber == -1) return null;
+
+
+            foreach(Condition condition in optionsManager.appSettings.conditions)
+            {
+                if(condition.value == OneRow[conditionColumnNumber].ToString().Trim()) //here value from specified column oneRow. ...
+                {
+                    thisstring = File.ReadAllText(
+                        @"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\scripts\" + condition.script);
+       
+                    break;
+                }
+                else
+                {
+                    thisstring = File.ReadAllText(
+                       @"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\scripts\" + optionsManager.appSettings.defaultPrinterScript);
+                }
+            }
+
+
 
             for (int i = 0; i < columnNames.Count; i++)
             {
@@ -23,12 +42,35 @@ namespace VIVEVMSLabels
                 thisstring = thisstring.Replace("@@" + columnNames[i] + "@@", OneRow[i].ToString());
             }
 
-            using (StreamWriter writer = new StreamWriter(@"D:\\profil_arkadiuszw\\Desktop\\dssmith 2021-01-22\\Wpf_Sek20210121\\WpfApp2\\printedlog.txt"))
-            {
-                writer.WriteLine(thisstring);
-            }
+         
 
             return thisstring;
+        }
+
+        private static int findColumnNumber(StringCollection columnNames)
+        {
+            OptionsManager optionsManager = OptionsManager.getInstance();
+            int i = -1;
+            bool found = false;
+
+            foreach(string columnName in columnNames)
+            {
+                i++;
+
+                if (columnName.Trim() == optionsManager.appSettings.conditionColumn.Trim())
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if(found)
+            {
+                return i;
+            }else
+            {
+                return -1;
+            }
         }
 
 

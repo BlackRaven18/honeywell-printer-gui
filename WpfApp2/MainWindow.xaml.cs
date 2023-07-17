@@ -22,16 +22,33 @@ namespace VIVEVMSLabels
     {
         
         protected DataTable dt;
+        private readonly string LOG_FILE_PATH = @"D:\\profil_arkadiuszw\\Desktop\\dssmith 2021-01-22\\Wpf_Sek20210121\\WpfApp2\\printedlog.txt";
+       
 
 
-        public MainWindow()
+    public MainWindow()
         {
             InitializeComponent();
-            //OptionsManager optionsManager = OptionsManager.getInstance();
-            //Debug.WriteLine($"default = {optionsManager.appSettings.defaultPrinterScript}");
+            clearLogFile();
         }
 
+        private void clearLogFile()
+        {
+            using (StreamWriter writer = new StreamWriter(LOG_FILE_PATH))
+            {
+                writer.WriteLine();
+            }
+        }
 
+        private void addToLogFile(string entry)
+        {
+            using (StreamWriter writer = File.AppendText(LOG_FILE_PATH))
+            {
+                writer.WriteLine("\n------------------------------------------------------------\n");
+                writer.WriteLine(entry);
+                writer.WriteLine("\n------------------------------------------------------------\n");
+            }
+        }
   
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -198,7 +215,8 @@ namespace VIVEVMSLabels
 
                 Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
                 //MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, printedScript, columnNames));
-                LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
+                string result = LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
+                addToLogFile(result);
                 //MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, columnNames));
                 System.Threading.Thread.Sleep(1500);
 
