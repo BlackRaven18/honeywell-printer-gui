@@ -211,9 +211,10 @@ namespace VIVEVMSLabels
 
         private void Cmb_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            //TODO: this prints the selected port, uncomment this later
             btnPrint.IsEnabled = true;
 
-            SerialPort MyCOMPort = new SerialPort();
+           /* SerialPort MyCOMPort = new SerialPort();
             MyCOMPort.PortName = (string)comboboxforcom.SelectedValue;            // Name of the COM port 
             MyCOMPort.BaudRate = 9600;               // Baudrate = 9600bps
             MyCOMPort.Parity = Parity.None;          // Parity bits = none  
@@ -231,7 +232,7 @@ namespace VIVEVMSLabels
                                                             "NEXT"
 
                                         ));
-            MyCOMPort.Close();
+            MyCOMPort.Close();*/
 
         }
     }
