@@ -15,33 +15,27 @@ namespace VIVEVMSLabels
             string thisstring = "";
             int conditionColumnNumber = findColumnNumber(columnNames);
 
-            if (conditionColumnNumber == -1) return null;
-
-
             foreach(Condition condition in optionsManager.appSettings.conditions)
             {
-                if(condition.value == OneRow[conditionColumnNumber].ToString().Trim()) //here value from specified column oneRow. ...
-                {
+                if(conditionColumnNumber == -1){
+                    thisstring = File.ReadAllText(optionsManager.appSettings.defaultPrinterScript);
+                        break;
+                }
+
+                if(condition.value == OneRow[conditionColumnNumber].ToString().Trim()){
                     thisstring = File.ReadAllText(condition.script);
-       
                     break;
                 }
-                else
-                {
-                    thisstring = File.ReadAllText(
-                       @optionsManager.appSettings.defaultPrinterScript);
+                else{
+                    thisstring = File.ReadAllText(optionsManager.appSettings.defaultPrinterScript);
                 }
             }
-
-
 
             for (int i = 0; i < columnNames.Count; i++)
             {
                 //Debug.WriteLine(columnNames[i]);
                 thisstring = thisstring.Replace("@@" + columnNames[i] + "@@", OneRow[i].ToString());
             }
-
-         
 
             return thisstring;
         }
@@ -63,11 +57,9 @@ namespace VIVEVMSLabels
                 }
             }
 
-            if(found)
-            {
+            if(found){
                 return i;
-            }else
-            {
+            }else{
                 return -1;
             }
         }

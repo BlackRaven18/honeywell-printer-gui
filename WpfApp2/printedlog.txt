@@ -2,12 +2,36 @@
 
 ------------------------------------------------------------
 
+'default
+ALIGN 1
+CTRLSUM$ = "BGN1"
+SHELF$= "01"
+PRPOS60, 160
+BARFONT OFF
+BARSET "CODE128", 3, 1, 4, 120, 0, 0
+PRBAR CTRLSUM$
+FONT "Univers Bold", 40
+PRPOS30, 01
+PRTXT CTRLSUM$
+DIR 1
+FONT "Univers Bold", 40
+PRPOS50, 325
+PRTXT SHELF$
+PRINTFEED
+NEXT
+
+
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+
 '1
 ALIGN 1
-CTRLSUM$ = "80"
+CTRLSUM$ = "92"
 SHELF$= "0"
-CORENUM1$ = "1"
-CORENUM2$ = "1"
+CORENUM1$ = "01"
+CORENUM2$ = "01"
 CORENUM3$ = "01"
 PRPOS60, 160
 BARFONT OFF
@@ -38,10 +62,10 @@ NEXT
 
 '2
 ALIGN 1
-CTRLSUM$ = "92"
+CTRLSUM$ = "28"
 SHELF$= "0"
-CORENUM1$ = "1"
-CORENUM2$ = "1"
+CORENUM1$ = "01"
+CORENUM2$ = "01"
 CORENUM3$ = "02"
 PRPOS60, 160
 BARFONT OFF
@@ -72,10 +96,10 @@ NEXT
 
 '3
 ALIGN 1
-CTRLSUM$ = "28"
+CTRLSUM$ = "62"
 SHELF$= "0"
-CORENUM1$ = "1"
-CORENUM2$ = "1"
+CORENUM1$ = "01"
+CORENUM2$ = "01"
 CORENUM3$ = "03"
 PRPOS60, 160
 BARFONT OFF
@@ -95,30 +119,6 @@ PRTXT SHELF$
 NORIMAGE
 PRPOS30, 325
 PRBOX125, 99, 20
-PRINTFEED
-NEXT
-
-
-------------------------------------------------------------
-
-
-------------------------------------------------------------
-
-'1
-ALIGN 1
-CTRLSUM$ = "BGN1"
-SHELF$= "1"
-PRPOS60, 160
-BARFONT OFF
-BARSET "CODE128", 3, 1, 4, 120, 0, 0
-PRBAR CTRLSUM$
-FONT "Univers Bold", 40
-PRPOS30, 01
-PRTXT CTRLSUM$
-DIR 1
-FONT "Univers Bold", 40
-PRPOS50, 325
-PRTXT SHELF$
 PRINTFEED
 NEXT
 

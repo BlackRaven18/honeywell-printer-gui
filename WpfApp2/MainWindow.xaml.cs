@@ -22,13 +22,14 @@ namespace VIVEVMSLabels
     {
         
         protected DataTable dt;
-        private readonly string LOG_FILE_PATH = @"D:\\profil_arkadiuszw\\Desktop\\dssmith 2021-01-22\\Wpf_Sek20210121\\WpfApp2\\printedlog.txt";
+        private readonly string LOG_FILE_PATH = "printedlog.txt";
        
 
 
     public MainWindow()
         {
             InitializeComponent();
+            loadAppSettings();
             clearLogFile();
         }
 
@@ -38,6 +39,11 @@ namespace VIVEVMSLabels
             {
                 writer.WriteLine();
             }
+        }
+
+        private void loadAppSettings()
+        {
+            OptionsManager.getInstance();
         }
 
         private void addToLogFile(string entry)
@@ -175,18 +181,6 @@ namespace VIVEVMSLabels
                 columnNames.Add(oneColumn.ColumnName);
             }
 
-            //TODO: test printing without using printer
-            /* foreach (DataRow oneRow in dt.Rows)
-             {
-
-                 //RawPrinterHelper.SendStringToPrinter("Generic / Text Only", LablelStringToPrinter.StringToPrinter(OneRow));
-
-                 //Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
-
-                 LablelStringToPrinter.StringToPrinter(oneRow, printedScript, columnNames);
-             }*/
-
-
 
             SerialPort MyCOMPort = new SerialPort(); // Create a new SerialPort Object
 
@@ -204,20 +198,14 @@ namespace VIVEVMSLabels
             int printnumber;
             printnumber = 1;
 
-
-            //TODO: printing rows based on excel
-            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
-            System.Threading.Thread.Sleep(1500);
-
             foreach (DataRow oneRow in dt.Rows)
             {
 
 
                 Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
-                //MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, printedScript, columnNames));
                 string result = LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
                 addToLogFile(result);
-                //MyCOMPort.Write(LablelStringToPrinter.StringToPrinter(oneRow, columnNames));
+                //MyCOMPort.Write(result);
                 System.Threading.Thread.Sleep(1500);
 
             }

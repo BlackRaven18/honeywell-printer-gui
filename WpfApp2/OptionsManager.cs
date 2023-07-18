@@ -11,7 +11,7 @@ namespace VIVEVMSLabels
 {
     public class OptionsManager
     {
-        private readonly string APP_SETTINGS_PATH = @"D:\profil_arkadiuszw\Desktop\dssmith 2021-01-22\Wpf_Sek20210121\WpfApp2\appsettings.json";
+        private readonly string APP_SETTINGS_PATH ="appsettings.json";
 
         private static OptionsManager instance;
         public Options appSettings { get; set; }
