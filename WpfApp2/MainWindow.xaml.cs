@@ -205,7 +205,7 @@ namespace VIVEVMSLabels
                 Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
                 string result = LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
                 addToLogFile(result);
-                //MyCOMPort.Write(result);
+                MyCOMPort.Write(result);
                 System.Threading.Thread.Sleep(1500);
 
             }
