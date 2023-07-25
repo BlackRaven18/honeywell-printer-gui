@@ -23,7 +23,7 @@
                     <Label Name="txtIns" Content="Wczytane rekordy:" FontSize="15" FontWeight="Bold" Margin="250,0,250,0" HorizontalAlignment="Stretch" />
                     <Label Name="txtInfo1" Content="Wybierz akcję" FontSize="10" FontWeight="Bold"  Margin="0,0,0,0" HorizontalAlignment="Right" Foreground="Black"/>
                 </WrapPanel>
-                <DataGrid AutoGenerateColumns="True" IsReadOnly="True" HorizontalAlignment="Center" Name="dtGrid" VerticalAlignment="Center" />
+                <DataGrid AutoGenerateColumns="True" IsReadOnly="True" HorizontalAlignment="Center" Name="dtGrid" VerticalAlignment="Center"/>
             </StackPanel>
         </Border>
     </Grid>

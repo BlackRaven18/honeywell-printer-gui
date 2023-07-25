@@ -23,6 +23,8 @@ namespace VIVEVMSLabels
         
         protected DataTable dt;
         private readonly string LOG_FILE_PATH = "printedlog.txt";
+        private bool isExcelLoaded = false;
+        private bool isComPortSelected = false;
        
 
 
@@ -31,6 +33,8 @@ namespace VIVEVMSLabels
             InitializeComponent();
             loadAppSettings();
             clearLogFile();
+            checkIfPortSelectionShouldBeEnabled();
+            checkIsAllowedToPrint();
         }
 
         private void clearLogFile()
@@ -45,6 +49,64 @@ namespace VIVEVMSLabels
         {
             OptionsManager.getInstance();
         }
+
+        private void checkIsAllowedToPrint()
+        {
+            OptionsManager optionsManager = OptionsManager.getInstance();
+            string printMethod = optionsManager.appSettings.printMethod.ToLower().Trim();
+            bool shouldPrintButtonBeEnabled = false;
+
+            if (!isExcelLoaded)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    btnPrint.IsEnabled = false;
+
+                }));
+                
+                return;
+            }
+
+
+            if (printMethod == "com" && isComPortSelected)
+            {
+                shouldPrintButtonBeEnabled = true;
+            }
+            else if (printMethod == "ethernet")
+            {
+                shouldPrintButtonBeEnabled = true;
+            }else
+            {
+                shouldPrintButtonBeEnabled = false;
+            }
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                btnPrint.IsEnabled = shouldPrintButtonBeEnabled;
+
+            }));
+
+        }
+
+        private void checkIfPortSelectionShouldBeEnabled()
+        {
+            OptionsManager optionsManager = OptionsManager.getInstance();
+            string printMethod = optionsManager.appSettings.printMethod.ToLower().Trim();
+
+            if (printMethod == "com")
+            {
+                comboboxforcom.IsEnabled = true;
+            }
+            else if (printMethod == "ethernet")
+            {
+                comboboxforcom.IsEnabled = false;
+            }
+            else
+            {
+                comboboxforcom.IsEnabled = false;
+            }
+        }
+
 
         private void addToLogFile(string entry)
         {
@@ -139,10 +201,14 @@ namespace VIVEVMSLabels
 
             excelBook.Close(true, null, null);
             excelApp.Quit();
-            
+
+            isExcelLoaded = true;
+            checkIsAllowedToPrint();
+
 
             Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Wybierz akcję ({dt.Rows.Count} pozycji.)", Brushes.Black);
         }
+
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -170,23 +236,36 @@ namespace VIVEVMSLabels
 
         }
 
-        private void PrintLabels(string selectedport)
+        private void PrintLabelsByEthernet(int printingDelayTime, string ip, int port, StringCollection columnNames)
         {
             Updater uiUpdater = new Updater(UpdatetxtInfo1);
-            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, "Trwa drukowanie", Brushes.Red);
+            OptionsManager optionsManager = OptionsManager.getInstance();
 
-            StringCollection columnNames = new StringCollection();
-            foreach (DataColumn oneColumn in dt.Columns)
+            int printnumber;
+            printnumber = 1;
+
+            foreach (DataRow oneRow in dt.Rows)
             {
-                columnNames.Add(oneColumn.ColumnName);
-            }
 
+                Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
+                string result = LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
+                addToLogFile("\nPrint method: Ethernet\n\n\n");
+                addToLogFile(result);
+                EthernetManager.sendStringByEthernet(ip, port, result);
+                System.Threading.Thread.Sleep(printingDelayTime);
+
+            }
+        }
+
+        private void PrintLabelsByCom(int printingDelayTime, string selectedPort, StringCollection columnNames)
+        {
+            Updater uiUpdater = new Updater(UpdatetxtInfo1);
 
             SerialPort MyCOMPort = new SerialPort(); // Create a new SerialPort Object
 
             //COM port settings to 8N1 mode 
             //MyCOMPort.PortName = "COM9";            // Name of the COM port 
-            MyCOMPort.PortName = selectedport;              // Name of the COM port 
+            MyCOMPort.PortName = selectedPort;              // Name of the COM port 
             MyCOMPort.BaudRate = 9600;               // Baudrate = 9600bps
             MyCOMPort.Parity = Parity.None;          // Parity bits = none  
             MyCOMPort.DataBits = 8;                  // No of Data bits = 8
@@ -198,21 +277,49 @@ namespace VIVEVMSLabels
             int printnumber;
             printnumber = 1;
 
+
+
             foreach (DataRow oneRow in dt.Rows)
             {
 
-
                 Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, $"Trwa drukowanie {printnumber++} / {dt.Rows.Count} ", Brushes.Red);
                 string result = LablelStringToPrinter.StringToPrinter(oneRow, columnNames);
+                addToLogFile("\nPrint method: COM\n\n\n");
                 addToLogFile(result);
                 MyCOMPort.Write(result);
-                System.Threading.Thread.Sleep(1500);
+                System.Threading.Thread.Sleep(printingDelayTime);
 
             }
 
             MyCOMPort.Close();
+        }
 
-            //using System.Threading.Tasks;
+        private void PrintLabels(string selectedport)
+        {
+            Updater uiUpdater = new Updater(UpdatetxtInfo1);
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, uiUpdater, "Trwa drukowanie", Brushes.Red);
+
+            OptionsManager optionsManager = OptionsManager.getInstance();
+            string printMethod = optionsManager.appSettings.printMethod.ToLower().Trim();
+            int printingDelayTime = optionsManager.appSettings.printingDelayTime;
+            
+            StringCollection columnNames = new StringCollection();
+            foreach (DataColumn oneColumn in dt.Columns)
+            {
+                columnNames.Add(oneColumn.ColumnName);
+            }
+
+            //checking print method
+            if (printMethod == "com")
+            {
+                PrintLabelsByCom(printingDelayTime, selectedport, columnNames);
+            }
+            else if (printMethod == "ethernet")
+            {
+                string ip = optionsManager.appSettings.ethernetSettings.ip;
+                int port = optionsManager.appSettings.ethernetSettings.port;
+                PrintLabelsByEthernet(printingDelayTime, ip, port, columnNames);
+            }
 
             Task.Run(() =>
             {
@@ -249,9 +356,10 @@ namespace VIVEVMSLabels
         private void Cmb_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             //TODO: this prints the selected port, uncomment this later
-            btnPrint.IsEnabled = true;
+            isComPortSelected = true;
+            checkIsAllowedToPrint();
 
-           /* SerialPort MyCOMPort = new SerialPort();
+            SerialPort MyCOMPort = new SerialPort();
             MyCOMPort.PortName = (string)comboboxforcom.SelectedValue;            // Name of the COM port 
             MyCOMPort.BaudRate = 9600;               // Baudrate = 9600bps
             MyCOMPort.Parity = Parity.None;          // Parity bits = none  
@@ -269,7 +377,12 @@ namespace VIVEVMSLabels
                                                             "NEXT"
 
                                         ));
-            MyCOMPort.Close();*/
+            MyCOMPort.Close();
+
+        }
+
+        private void dtGrid_AddingNewItem(object sender, System.Windows.Controls.AddingNewItemEventArgs e)
+        {
 
         }
     }

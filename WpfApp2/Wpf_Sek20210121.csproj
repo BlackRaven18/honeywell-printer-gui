@@ -117,6 +117,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Condition.cs" />
+    <Compile Include="EthernetManager.cs" />
+    <Compile Include="EthernetSettings.cs" />
     <Compile Include="LablelStringToPrinterClass.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="OptionsManager.cs" />
