@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using YamlDotNet.Serialization;
 
 namespace VIVEVMSLabels
 {
     public class OptionsManager
     {
-        private readonly string APP_SETTINGS_PATH ="appsettings.json";
+        private readonly string APP_SETTINGS_PATH = "appsettings.yaml";
 
         private static OptionsManager instance;
         public Options appSettings { get; set; }
@@ -34,9 +35,10 @@ namespace VIVEVMSLabels
 
         private void loadAppSettings()
         {
+            Deserializer yamlDeserializer = new Deserializer();
+
             string appSettingsFile = File.ReadAllText(APP_SETTINGS_PATH);
-            Debug.WriteLine(appSettingsFile);
-            appSettings = JsonSerializer.Deserialize<Options>(appSettingsFile);
+            appSettings = yamlDeserializer.Deserialize<Options>(appSettingsFile);
         }
     }
 }

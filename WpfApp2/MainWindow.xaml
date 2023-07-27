@@ -9,19 +9,27 @@
     <Grid>
         <Border BorderBrush="Black" BorderThickness="5">
             <StackPanel HorizontalAlignment="Center">
-                <Border BorderBrush="Black" BorderThickness="0,0,0,5" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center" Width="890">
-                    <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Border BorderBrush="Black" BorderThickness="0,0,0,5" Height="80" HorizontalAlignment="Center" VerticalAlignment="Center" Width="890" Padding="0,10,0,0" >
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="3,0,0,0">
                         <TextBox Height="30" Name="txtFilePath" Width="340" Margin="10,0,10,0" FontSize="15" Opacity="1" />
                         <Button Content="Wczytaj Excel" Name="btnOpen" Width="110" FontSize="15" Height="30" FontWeight="Bold" Click="btnOpen_Click" />
                         <Label Content="Port szeregowy:" Width="120" FontSize="15" Height="30" Margin="15,0,0,0" HorizontalAlignment="Right" />
                         <ComboBox Name="comboboxforcom" Width="90" FontSize="15" Height="30"  FontWeight="Bold" Initialized="Cmb_Initialized" SelectionChanged="Cmb_SelectionChanged"  />
                         <Button Content="Drukuj" Name="btnPrint" Width="70" FontSize="15" Height="30" Margin="15,0,0,0" FontWeight="Bold"  IsEnabled="False" Click="btnPrint_Click" />
                         <Button Content="Zamknij" FontSize="15" Height="30" FontWeight="Bold" Name="btnClose" Width="75" Margin="15,0,0,0" Background="#FFEFE5E5" Click="btnClose_Click" />
+                        <WrapPanel Width="890" >
+                            <Label Content="Typ połączenia: " FontSize="14"/>
+                            <Label x:Name="ConnectionTypeLabel" Content="" FontSize="14" FontWeight="Bold"/>
+                            <Label Content="IP: " FontSize="14"/>
+                            <Label x:Name="IpLabel" Content="" FontSize="14" FontWeight="Bold"/>
+                            <Label Content="Port: " FontSize="14"/>
+                            <Label x:Name="PortLabel" Content="" FontSize="14" FontWeight="Bold"/>
+                        </WrapPanel>
                     </WrapPanel>
                 </Border>
-                <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Center" Width="890"   >
-                    <Label Name="txtIns" Content="Wczytane rekordy:" FontSize="15" FontWeight="Bold" Margin="250,0,250,0" HorizontalAlignment="Stretch" />
-                    <Label Name="txtInfo1" Content="Wybierz akcję" FontSize="10" FontWeight="Bold"  Margin="0,0,0,0" HorizontalAlignment="Right" Foreground="Black"/>
+                <WrapPanel Width="890"   >
+                    <Label x:Name="txtIns" Content="Wczytane rekordy:" FontSize="15" FontWeight="Bold" Margin="250,0,250,0" HorizontalAlignment="Stretch" />
+                    <Label x:Name="txtInfo1" Content="Wybierz akcję" FontSize="10" FontWeight="Bold"  Margin="0,0,0,0" HorizontalAlignment="Right" Foreground="Black"/>
                 </WrapPanel>
                 <DataGrid AutoGenerateColumns="True" IsReadOnly="True" HorizontalAlignment="Center" Name="dtGrid" VerticalAlignment="Center"/>
             </StackPanel>

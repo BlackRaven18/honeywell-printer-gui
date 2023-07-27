@@ -33,8 +33,41 @@ namespace VIVEVMSLabels
             InitializeComponent();
             loadAppSettings();
             clearLogFile();
+            showSelectedConnectionMode();
             checkIfPortSelectionShouldBeEnabled();
             checkIsAllowedToPrint();
+        }
+
+        private void showSelectedConnectionMode()
+        {
+            OptionsManager optionsManager = OptionsManager.getInstance();
+            string printMethod = optionsManager.appSettings.printMethod.ToLower().Trim();
+
+            if (printMethod == "com")
+            {
+                setConnectiondDetailsLabels(printMethod, "-", "-");
+            }
+            else if (printMethod == "ethernet")
+            {
+                setConnectiondDetailsLabels(printMethod, 
+                    optionsManager.appSettings.ethernetSettings.ip,
+                    optionsManager.appSettings.ethernetSettings.port.ToString());
+            }
+            else
+            {
+                setConnectiondDetailsLabels("-", "-", "-");
+            }
+
+        }
+
+        private void setConnectiondDetailsLabels(string mode, string ip, string port)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ConnectionTypeLabel.Content = mode;
+                IpLabel.Content = ip;
+                PortLabel.Content = port;
+            }));
         }
 
         private void clearLogFile()
